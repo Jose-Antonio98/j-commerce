@@ -1,12 +1,13 @@
 package dev.jose.jcommerce.users.repository;
 
-import dev.jose.jcommerce.users.domain.UsersId;
-import org.apache.catalina.User;
+import dev.jose.jcommerce.users.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<User, UsersId> {
+public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
+    Boolean existsByEmail(String email);
 }
