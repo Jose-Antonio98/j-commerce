@@ -1,6 +1,7 @@
 package dev.jose.jcommerce.auth.service;
 
 import dev.jose.jcommerce.auth.dto.LoginRequest;
+import dev.jose.jcommerce.config.JwtConfiguration;
 import dev.jose.jcommerce.config.SecurityConfig;
 import dev.jose.jcommerce.users.domain.User;
 import dev.jose.jcommerce.users.domain.enums.Role;
@@ -13,10 +14,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Optional;
 
@@ -29,6 +33,9 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 
 @SpringJUnitConfig(AuthAuthenticationIntegrationTest.TestConfiguration.class)
+@TestPropertySource(properties = {
+        "app.security.jwt.secret-base64=MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE="
+})
 class AuthAuthenticationIntegrationTest {
 
     private static final String EMAIL = "cliente@example.com";
@@ -42,6 +49,9 @@ class AuthAuthenticationIntegrationTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @MockitoBean
+    private JwtTokenService jwtTokenService;
 
     @BeforeEach
     void setUp() {
@@ -93,7 +103,8 @@ class AuthAuthenticationIntegrationTest {
     }
 
     @Configuration
-    @Import({SecurityConfig.class, CustomUserDetailsService.class, AuthService.class})
+    @EnableWebSecurity
+    @Import({JwtConfiguration.class, SecurityConfig.class, CustomUserDetailsService.class, AuthService.class})
     static class TestConfiguration {
 
         @Bean
