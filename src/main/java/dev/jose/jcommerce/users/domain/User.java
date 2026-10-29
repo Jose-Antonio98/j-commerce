@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static dev.jose.jcommerce.users.util.EmailNormalize.normalizeEmail;
+import static dev.jose.jcommerce.util.EmailNormalize.normalizeEmail;
 
 
 @Entity

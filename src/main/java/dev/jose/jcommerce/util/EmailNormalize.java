@@ -1,4 +1,4 @@
-package dev.jose.jcommerce.users.util;
+package dev.jose.jcommerce.util;
 
 import java.util.Locale;
 

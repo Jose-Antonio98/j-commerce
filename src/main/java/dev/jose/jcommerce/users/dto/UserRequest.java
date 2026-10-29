@@ -1,7 +1,7 @@
 package dev.jose.jcommerce.users.dto;
 
 import dev.jose.jcommerce.users.domain.User;
-import dev.jose.jcommerce.users.util.EmailNormalize;
+import dev.jose.jcommerce.util.EmailNormalize;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

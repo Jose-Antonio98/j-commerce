@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -92,9 +93,15 @@ public class GlobalExceptionHandler {
         return response(HttpStatus.BAD_REQUEST, "Erro de validação", messages);
     }
 
+    // Trata itens não encontrados no banco de dados
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex) {
         return response(HttpStatus.NOT_FOUND, "Resource", List.of(ex.getMessage()));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationError(AuthenticationException ex) {
+        return response(HttpStatus.UNAUTHORIZED, "Acesso negado", List.of("Email ou senha inválidos"));
     }
 
     private ResponseEntity<ErrorResponse> response(
