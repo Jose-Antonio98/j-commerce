@@ -4,6 +4,7 @@ import dev.jose.jcommerce.exception.ResourceAlreadyRegistered;
 import dev.jose.jcommerce.exception.ResourceNotFoundException;
 import dev.jose.jcommerce.users.dto.UserRequest;
 import dev.jose.jcommerce.users.dto.UserResponse;
+import dev.jose.jcommerce.users.mapper.UserMapper;
 import dev.jose.jcommerce.users.repository.UserRepository;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,10 +20,12 @@ public class UserService  {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Transactional
@@ -33,8 +36,8 @@ public class UserService  {
         String encodedPassword = passwordEncoder.encode(userRequest.password());
 
         try {
-            var user = userRepository.saveAndFlush(userRequest.toEntity(encodedPassword));
-            return UserResponse.fromEntity(user);
+            var user = userRepository.saveAndFlush(userMapper.toEntity(userRequest, encodedPassword));
+            return userMapper.toResponse(user);
         } catch (DataIntegrityViolationException ex) {
             if (isEmailUniqueViolation(ex)) {
                 throw new ResourceAlreadyRegistered("usuário");
@@ -44,15 +47,8 @@ public class UserService  {
     }
 
     public UserResponse findUserById(UUID id) {
-        return UserResponse.fromEntity(userRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
+        return userMapper.toResponse(userRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
-
-    public UserResponse findUserByEmail(String email) {
-        return UserResponse.fromEntity(userRepository.findByEmail(email).orElseThrow(ResourceNotFoundException::new));
-    }
-
-
-
 
 
 

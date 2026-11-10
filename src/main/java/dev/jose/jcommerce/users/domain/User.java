@@ -15,7 +15,7 @@ import static dev.jose.jcommerce.util.EmailNormalize.normalizeEmail;
 
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",  uniqueConstraints = {@UniqueConstraint(name = "users_email_key", columnNames = "email")})
 @Getter @Setter
 public class User {
 
@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     @Email
     @NotBlank
     private String email;

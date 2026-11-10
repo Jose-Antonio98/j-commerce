@@ -20,10 +20,5 @@ public record UserRequest(
         email = EmailNormalize.normalizeEmail(email);
     }
 
-    public User toEntity(String encodedPassword) {
-       var user = new User();
-       user.setEmail(email);
-       user.setPasswordHash(encodedPassword);
-       return user;
-    }
+
 }

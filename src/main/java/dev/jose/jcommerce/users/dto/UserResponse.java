@@ -14,14 +14,5 @@ public record UserResponse(
         LocalDateTime createdAt,
         LocalDateTime updateAt
 ) {
-    public static UserResponse fromEntity(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getEmail(),
-                user.getRole(),
-                user.getActive(),
-                user.getCreatedAt(),
-                user.getUpdatedAt()
-        );
-    }
+
 }
