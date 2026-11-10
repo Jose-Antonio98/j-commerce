@@ -99,10 +99,25 @@ public class GlobalExceptionHandler {
         return response(HttpStatus.NOT_FOUND, "Resource", List.of(ex.getMessage()));
     }
 
+    // Trata erros de autenticação
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleAuthenticationError(AuthenticationException ex) {
         return response(HttpStatus.UNAUTHORIZED, "Acesso negado", List.of("Email ou senha inválidos"));
     }
+
+    // Trata itens com status já ativo no banco de dados
+    @ExceptionHandler(ResourceAlreadyActive.class)
+    public ResponseEntity<ErrorResponse> handleResourceAlreadyActive(ResourceAlreadyActive ex) {
+        return response(HttpStatus.CONFLICT, "Conflito", List.of(ex.getMessage()));
+    }
+
+    // Trata itens com status já desativados no banco de dados
+    @ExceptionHandler(ResourceAlreadyDesative.class)
+    public ResponseEntity<ErrorResponse> handleResourceAlreadyDesative(ResourceAlreadyDesative ex) {
+        return response(HttpStatus.CONFLICT, "Conflito", List.of(ex.getMessage()));
+    }
+
+
 
     private ResponseEntity<ErrorResponse> response(
             HttpStatus status,
