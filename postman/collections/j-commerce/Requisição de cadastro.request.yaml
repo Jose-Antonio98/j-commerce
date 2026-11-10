@@ -1,0 +1,17 @@
+$kind: http-request
+name: Requisição de cadastro
+description: ""
+url: http://localhost:8081/auth/register
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"email\": \"teste@exemplo.com\",\r
+
+    \    \"password\": \"senha1234\"\r
+
+    }"
+auth:
+  type: noauth
+order: 85704512112553

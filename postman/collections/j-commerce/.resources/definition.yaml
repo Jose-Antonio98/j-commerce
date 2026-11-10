@@ -1,0 +1,9 @@
+$kind: collection
+name: j-commerce
+description: |-
+  API collection for the j-commerce Spring Boot application.
+  Base URL: http://localhost:8081
+  
+  Endpoints:
+  - Auth: Register a new user
+  - Users: Get user by ID

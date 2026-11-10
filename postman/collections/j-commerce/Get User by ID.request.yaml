@@ -1,0 +1,44 @@
+$kind: http-request
+order: 2000
+method: GET
+url: "{{baseUrl}}/auth/admin/users/{{userId}}"
+auth:
+  type: bearer
+  credentials:
+    token: "{{accessToken}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status is 200 OK", function () {
+          pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has correct structure", function () {
+          var json = pm.response.json();
+          pm.expect(json).to.have.property("id");
+          pm.expect(json).to.have.property("email");
+          pm.expect(json).to.have.property("role");
+          pm.expect(json).to.have.property("ative");
+          pm.expect(json).to.have.property("createdAt");
+          pm.expect(json).to.have.property("updateAt");
+      });
+
+      pm.test("id is a valid UUID", function () {
+          var json = pm.response.json();
+          pm.expect(json.id).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+      });
+
+      pm.test("email is a string", function () {
+          var json = pm.response.json();
+          pm.expect(json.email).to.be.a("string").and.not.empty;
+      });
+
+      pm.test("ative is a boolean", function () {
+          var json = pm.response.json();
+          pm.expect(json.ative).to.be.a("boolean");
+      });
+
+      pm.test("Response time is under 2000ms", function () {
+          pm.expect(pm.response.responseTime).to.be.below(2000);
+      });
+    language: text/javascript

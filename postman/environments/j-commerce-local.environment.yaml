@@ -1,0 +1,8 @@
+name: j-commerce Local
+values:
+  - key: baseUrl
+    value: 'http://localhost:8081'
+  - key: userId
+    value: ''
+  - key: accessToken
+    value: ''
