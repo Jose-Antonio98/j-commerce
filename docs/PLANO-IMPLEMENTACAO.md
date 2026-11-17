@@ -137,7 +137,7 @@ Não é necessário criar pastas vazias antecipadamente. Criar cada parte junto 
 
 #### API / service
 
-- Leitura pública: `GET /categories`, `GET /products`, `GET /products/{id}`.
+- Leitura pública: `GET /catalog/categories`, `GET /catalog/products`, `GET /catalog/products/{id}`.
 - Administração: criar/editar/ativar/desativar categorias e produtos somente para `ADMIN`.
 - Filtros: texto, categoria, ativo e faixa de preço; paginação com limites máximos.
 - DTOs de resposta não devem serializar entidades ou relações JPA diretamente.

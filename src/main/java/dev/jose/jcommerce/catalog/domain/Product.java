@@ -11,7 +11,9 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Entity
-@Table(name = "products")
+@Table(name = "products", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_product_slug", columnNames = "slug")
+})
 @Getter
 @Setter
 public class Product {
@@ -20,10 +22,14 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Version
+    @Column(nullable = false)
+    private Long version;
+
     @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "slug", unique = true, nullable = false, length = 255)
+    @Column(name = "slug", nullable = false, length = 255)
     private String slug;
 
     private String description;

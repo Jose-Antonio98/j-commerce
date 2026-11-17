@@ -42,7 +42,7 @@ public class CategoryService {
             return categoryMapper.toResponse(category);
         } catch (DataIntegrityViolationException ex){
             if(isCategoryNameOrSlugUniqueViolation(ex)){
-                throw new ResourceAlreadyRegistered("Categoria já cadastrada.");
+                throw new ResourceAlreadyRegistered("Categoria");
             }
             throw ex;
         }

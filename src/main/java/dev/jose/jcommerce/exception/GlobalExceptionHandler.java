@@ -2,6 +2,7 @@ package dev.jose.jcommerce.exception;
 
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -117,7 +119,17 @@ public class GlobalExceptionHandler {
         return response(HttpStatus.CONFLICT, "Conflito", List.of(ex.getMessage()));
     }
 
-
+    @ExceptionHandler({
+            OptimisticLockException.class,
+            ObjectOptimisticLockingFailureException.class
+    })
+    public ResponseEntity<ErrorResponse> handleOptimisticLockConflict(RuntimeException ex) {
+        return response(
+                HttpStatus.CONFLICT,
+                "Conflito de atualização",
+                List.of("O produto foi alterado por outra operação. Recarregue os dados e tente novamente.")
+        );
+    }
 
     private ResponseEntity<ErrorResponse> response(
             HttpStatus status,
